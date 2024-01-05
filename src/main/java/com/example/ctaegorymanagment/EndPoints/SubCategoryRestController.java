@@ -1,12 +1,15 @@
 package com.example.ctaegorymanagment.EndPoints;
 
+import com.example.ctaegorymanagment.model.Categories;
 import com.example.ctaegorymanagment.model.Subcategory;
+import com.example.ctaegorymanagment.repository.CategoriesRepository;
 import com.example.ctaegorymanagment.service.SubCategoryService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,9 +19,23 @@ import java.util.List;
 public class SubCategoryRestController {
 
     private final SubCategoryService subCategoryService;
+    private final CategoriesRepository categoryRepository;
 
     @PostMapping("/create")
-    public ResponseEntity<Subcategory> createSubcategory(@RequestBody Subcategory subcategory) {
+    public ResponseEntity<Subcategory> createSubcategory(
+            @RequestPart("image") MultipartFile image,
+            @RequestParam String name,
+            @RequestParam int categoryId) {
+
+        String imagePath = subCategoryService.saveImage(image);
+
+        Subcategory subcategory = new Subcategory();
+        subcategory.setImage(imagePath);
+        subcategory.setName(name);
+        Categories category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new EntityNotFoundException("Category with ID " + subcategory.getCategory().getId() + " not found"));
+        subcategory.setCategory(category);
+
         Subcategory createdSubcategory = subCategoryService.createSubcategory(subcategory);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSubcategory);
     }
