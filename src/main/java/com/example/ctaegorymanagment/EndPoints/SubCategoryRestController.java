@@ -21,6 +21,8 @@ public class SubCategoryRestController {
     private final SubCategoryService subCategoryService;
     private final CategoriesRepository categoryRepository;
 
+
+
     @PostMapping("/create")
     public ResponseEntity<Subcategory> createSubcategory(
             @RequestPart("image") MultipartFile image,
