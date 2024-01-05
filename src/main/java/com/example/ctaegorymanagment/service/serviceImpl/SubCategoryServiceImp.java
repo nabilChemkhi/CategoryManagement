@@ -35,13 +35,13 @@ public class SubCategoryServiceImp implements SubCategoryService {
     }
 
     @Override
-    public Optional<Subcategory> getSubcategoryById(Long id) {
+    public Optional<Subcategory> getSubcategoryById(int id) {
 
         return subCategoryRepository.findById(id);
     }
 
     @Override
-    public Subcategory updateSubcategory(Long id, Subcategory updatedSubcategory) {
+    public Subcategory updateSubcategory(int id, Subcategory updatedSubcategory) {
         if (subCategoryRepository.existsById(id)) {
             updatedSubcategory.setId(id);
             return subCategoryRepository.save(updatedSubcategory);
@@ -50,7 +50,7 @@ public class SubCategoryServiceImp implements SubCategoryService {
     }
 
     @Override
-    public boolean deleteSubcategory(Long id) {
+    public boolean deleteSubcategory(int id) {
         if (subCategoryRepository.existsById(id)) {
             subCategoryRepository.deleteById(id);
             return true;
@@ -59,7 +59,7 @@ public class SubCategoryServiceImp implements SubCategoryService {
     }
 
     @Override
-    public List<Subcategory> getSubcategoriesByCategoryId(Long categoryId) {
+    public List<Subcategory> getSubcategoriesByCategoryId(int categoryId) {
 
             if (!categoryRepository.existsById(categoryId)) {
                 throw new EntityNotFoundException("Category with ID " + categoryId + " not found");

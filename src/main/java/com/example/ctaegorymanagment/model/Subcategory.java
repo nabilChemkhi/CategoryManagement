@@ -14,11 +14,12 @@ public class Subcategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
-    @Column(nullable = false)
+    @Column(name = "name",nullable = false)
     private String name;
 
+    @Column(name = "image")
     private String image;
 
     @ManyToOne(cascade = CascadeType.ALL)

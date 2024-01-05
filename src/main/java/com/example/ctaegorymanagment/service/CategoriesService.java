@@ -14,9 +14,9 @@ public interface CategoriesService {
     List<Categories> getAllSubcategories();
 
 
-    Optional<Categories> getCategoryById(Long id);
+    Optional<Categories> getCategoryById(int id);
 
-    Categories updateCategory(Long id, Categories updatedSubcategory);
+    Categories updateCategory(int id, Categories updatedSubcategory);
 
-    boolean deleteCategory(Long id);
+    boolean deleteCategory(int id);
 }

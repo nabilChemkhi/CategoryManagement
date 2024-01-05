@@ -20,6 +20,7 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     @Override
     public Categories createSubcategory(Categories category) {
+
         return categoriesRepository.save(category);
     }
 
@@ -29,12 +30,13 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
-    public Optional<Categories> getCategoryById(Long id) {
+    public Optional<Categories> getCategoryById(int id) {
+
         return categoriesRepository.findById(id);
     }
 
     @Override
-    public Categories updateCategory(Long id, Categories updatedCcategory) {
+    public Categories updateCategory(int id, Categories updatedCcategory) {
         if (categoriesRepository.existsById(id)) {
             updatedCcategory.setId(id);
             return categoriesRepository.save(updatedCcategory);
@@ -43,7 +45,7 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
-    public boolean deleteCategory(Long id) {
+    public boolean deleteCategory(int id) {
         if (categoriesRepository.existsById(id)) {
             categoriesRepository.deleteById(id);
             return true;

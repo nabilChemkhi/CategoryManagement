@@ -32,20 +32,20 @@ public class CategoriesRestController {
         }
 
         @GetMapping("/getById/{id}")
-        public ResponseEntity<Categories> getCategoriesById(@PathVariable Long id) {
+        public ResponseEntity<Categories> getCategoriesById(@PathVariable int id) {
             return   categoriesService.getCategoryById(id)
                     .map(category -> new ResponseEntity<>(category, HttpStatus.OK))
                     .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
         }
 
         @PutMapping("/update/{id}")
-        public ResponseEntity<Categories> updateSubcategory(@PathVariable Long id, @RequestBody Categories updatedSubcategory) {
+        public ResponseEntity<Categories> updateSubcategory(@PathVariable int id, @RequestBody Categories updatedSubcategory) {
             Categories category = categoriesService.updateCategory(id, updatedSubcategory);
             return (category != null) ? ResponseEntity.ok(category) : ResponseEntity.notFound().build();
         }
 
         @DeleteMapping("/delete/{id}")
-        public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
+        public ResponseEntity<Void> deleteCategory(@PathVariable int id) {
             boolean deleted = categoriesService.deleteCategory(id);
             return (deleted) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
         }

@@ -10,11 +10,11 @@ public interface SubCategoryService {
 
     List<Subcategory> getAllSubcategories();
 
-    Optional<Subcategory> getSubcategoryById(Long id);
+    Optional<Subcategory> getSubcategoryById(int id);
 
-    Subcategory updateSubcategory(Long id, Subcategory updatedSubcategory);
+    Subcategory updateSubcategory(int id, Subcategory updatedSubcategory);
 
-    boolean deleteSubcategory(Long id);
+    boolean deleteSubcategory(int id);
 
-    List<Subcategory> getSubcategoriesByCategoryId(Long categoryId);
+    List<Subcategory> getSubcategoriesByCategoryId(int categoryId);
 }
