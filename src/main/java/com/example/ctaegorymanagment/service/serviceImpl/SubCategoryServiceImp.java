@@ -1,5 +1,6 @@
 package com.example.ctaegorymanagment.service.serviceImpl;
 
+import com.example.ctaegorymanagment.model.Categories;
 import com.example.ctaegorymanagment.model.Subcategory;
 import com.example.ctaegorymanagment.repository.CategoriesRepository;
 import com.example.ctaegorymanagment.repository.SubCategoryRepository;
@@ -22,6 +23,11 @@ public class SubCategoryServiceImp implements SubCategoryService {
     @Override
     public Subcategory createSubcategory(Subcategory subcategory) {
 
+        Categories category = categoryRepository.findById(subcategory.getCategory().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Category with ID " + subcategory.getCategory().getId() + " not found"));
+
+        subcategory.setCategory(category);
+
         String imageUrl = "/images/" + subcategory.getImage();
         subcategory.setImage(imageUrl);
 
@@ -42,12 +48,15 @@ public class SubCategoryServiceImp implements SubCategoryService {
 
     @Override
     public Subcategory updateSubcategory(int id, Subcategory updatedSubcategory) {
-        if (subCategoryRepository.existsById(id)) {
-            updatedSubcategory.setId(id);
-            return subCategoryRepository.save(updatedSubcategory);
-        }
-        return null;
+        Subcategory existingSubcategory = subCategoryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Subcategory with ID " + id + " not found"));
+
+        updatedSubcategory.setId(id);
+        updatedSubcategory.setCategory(existingSubcategory.getCategory());
+
+        return subCategoryRepository.save(updatedSubcategory);
     }
+
 
     @Override
     public boolean deleteSubcategory(int id) {
