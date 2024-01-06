@@ -4,6 +4,8 @@ import com.example.ctaegorymanagment.model.Categories;
 import com.example.ctaegorymanagment.model.Subcategory;
 import com.example.ctaegorymanagment.repository.CategoriesRepository;
 import com.example.ctaegorymanagment.service.SubCategoryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/subCategory")
+@Tag(name = "SubCategory")
 public class SubCategoryRestController {
 
     private final SubCategoryService subCategoryService;
@@ -23,6 +26,9 @@ public class SubCategoryRestController {
 
 
 
+    @Operation(
+            description = "Create a new subCategory"
+    )
     @PostMapping("/create")
     public ResponseEntity<Subcategory> createSubcategory(
             @RequestPart("image") MultipartFile image,
@@ -42,12 +48,18 @@ public class SubCategoryRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSubcategory);
     }
 
+    @Operation(
+            description = "get list of all subCategories"
+    )
     @GetMapping("/getAllSubCategories")
     public List<Subcategory> getAllSubcategories() {
 
         return subCategoryService.getAllSubcategories();
     }
 
+    @Operation(
+            description = "Get subcategory by given id"
+    )
     @GetMapping("/getById/{id}")
     public ResponseEntity<Subcategory> getSubcategoryById(@PathVariable int id) {
         return   subCategoryService.getSubcategoryById(id)
@@ -55,12 +67,18 @@ public class SubCategoryRestController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @Operation(
+            description = "Update a given subcategory"
+    )
     @PutMapping("/update/{id}")
     public ResponseEntity<Subcategory> updateSubcategory(@PathVariable int id, @RequestBody Subcategory updatedSubcategory) {
         Subcategory subcategory = subCategoryService.updateSubcategory(id, updatedSubcategory);
         return (subcategory != null) ? ResponseEntity.ok(subcategory) : ResponseEntity.notFound().build();
     }
 
+    @Operation(
+            description = "Delete a subCategory by given Id"
+    )
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteSubcategory(@PathVariable int id) {
         boolean deleted = subCategoryService.deleteSubcategory(id);
@@ -68,6 +86,9 @@ public class SubCategoryRestController {
     }
 
 
+    @Operation(
+            description = "Get list of subcategories for a given category Id"
+    )
     @GetMapping("/byCategory/{categoryId}")
     public ResponseEntity<List<Subcategory>> getSubcategoriesByCategoryId(@PathVariable int categoryId) {
         try {
