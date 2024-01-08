@@ -1,8 +1,5 @@
 package com.example.ctaegorymanagment.EndPoints;
-
-import com.example.ctaegorymanagment.model.Categories;
-
-
+import com.example.ctaegorymanagment.dto.CategoriesDto;
 import com.example.ctaegorymanagment.service.CategoriesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,16 +24,16 @@ public class CategoriesRestController {
                 description = "Create a new Category"
         )
         @PostMapping("/create")
-        public ResponseEntity<Categories> createCategory(@RequestBody Categories category) {
-            Categories createdcategory = categoriesService.createSubcategory(category);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdcategory);
+        public ResponseEntity<CategoriesDto> createCategory(@RequestBody CategoriesDto categoryDto) {
+            CategoriesDto createdCategory = categoriesService.createSubcategory(categoryDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
         }
 
         @Operation(
                 description = "Get list of all categories"
         )
         @GetMapping("/getAllCategories")
-        public List<Categories> getAllCategories() {
+        public List<CategoriesDto> getAllCategories() {
             return categoriesService.getAllSubcategories();
         }
 
@@ -46,7 +42,7 @@ public class CategoriesRestController {
                 description = "Get Category by a given Id"
         )
         @GetMapping("/getById/{id}")
-        public ResponseEntity<Categories> getCategoriesById(@PathVariable int id) {
+        public ResponseEntity<CategoriesDto> getCategoriesById(@PathVariable int id) {
             return   categoriesService.getCategoryById(id)
                     .map(category -> new ResponseEntity<>(category, HttpStatus.OK))
                     .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -56,8 +52,8 @@ public class CategoriesRestController {
                 description = "Update a Category"
         )
         @PutMapping("/update/{id}")
-        public ResponseEntity<Categories> updateSubcategory(@PathVariable int id, @RequestBody Categories updatedSubcategory) {
-            Categories category = categoriesService.updateCategory(id, updatedSubcategory);
+        public ResponseEntity<CategoriesDto> updateSubcategory(@PathVariable int id, @RequestBody CategoriesDto updatedSubcategory) {
+            CategoriesDto category = categoriesService.updateCategory(id, updatedSubcategory);
             return (category != null) ? ResponseEntity.ok(category) : ResponseEntity.notFound().build();
         }
 

@@ -1,5 +1,6 @@
 package com.example.ctaegorymanagment.service;
 
+import com.example.ctaegorymanagment.dto.CategoriesDto;
 import com.example.ctaegorymanagment.model.Categories;
 
 import java.util.List;
@@ -9,14 +10,14 @@ public interface CategoriesService {
 
 
 
-    Categories createSubcategory(Categories category);
+    CategoriesDto createSubcategory(CategoriesDto categoryDto);
 
-    List<Categories> getAllSubcategories();
+    List<CategoriesDto> getAllSubcategories();
 
 
-    Optional<Categories> getCategoryById(int id);
+    Optional<CategoriesDto> getCategoryById(int id);
 
-    Categories updateCategory(int id, Categories updatedSubcategory);
+    CategoriesDto updateCategory(int id, CategoriesDto updatedSubcategory);
 
     boolean deleteCategory(int id);
 }

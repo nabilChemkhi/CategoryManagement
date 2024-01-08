@@ -1,6 +1,7 @@
 package com.example.ctaegorymanagment.service.serviceImpl;
 
-import com.example.ctaegorymanagment.model.Categories;
+import com.example.ctaegorymanagment.dto.SubcategoryDto;
+import com.example.ctaegorymanagment.mappers.SubcategoryMapper;
 import com.example.ctaegorymanagment.model.Subcategory;
 import com.example.ctaegorymanagment.repository.CategoriesRepository;
 import com.example.ctaegorymanagment.repository.SubCategoryRepository;
@@ -24,6 +25,7 @@ import java.util.UUID;
 public class SubCategoryServiceImp implements SubCategoryService {
     private final SubCategoryRepository subCategoryRepository;
     private final CategoriesRepository categoryRepository;
+    private final SubcategoryMapper subcategoryMapper;
 
 
     @Override
@@ -33,26 +35,31 @@ public class SubCategoryServiceImp implements SubCategoryService {
     }
 
     @Override
-    public List<Subcategory> getAllSubcategories() {
+    public List<SubcategoryDto> getAllSubcategories() {
 
-        return subCategoryRepository.findAll();
+        return subCategoryRepository.findAll()
+                .stream()
+                .map(subcategoryMapper::toSubcategoryDto)
+                .toList();
     }
 
     @Override
-    public Optional<Subcategory> getSubcategoryById(int id) {
+    public Optional<SubcategoryDto> getSubcategoryById(int id) {
 
-        return subCategoryRepository.findById(id);
+        return subCategoryRepository.findById(id)
+                .map(subcategoryMapper::toSubcategoryDto);
     }
 
     @Override
-    public Subcategory updateSubcategory(int id, Subcategory updatedSubcategory) {
+    public SubcategoryDto updateSubcategory(int id, SubcategoryDto updatedSubcategoryDto) {
         Subcategory existingSubcategory = subCategoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Subcategory with ID " + id + " not found"));
 
-        updatedSubcategory.setId(id);
-        updatedSubcategory.setCategory(existingSubcategory.getCategory());
+        updatedSubcategoryDto.setId(id);
+        updatedSubcategoryDto.setCategory(existingSubcategory.getCategory());
 
-        return subCategoryRepository.save(updatedSubcategory);
+        Subcategory subcategory= subCategoryRepository.save(subcategoryMapper.toSubcategory(updatedSubcategoryDto));
+        return subcategoryMapper.toSubcategoryDto(subcategory);
     }
 
 
